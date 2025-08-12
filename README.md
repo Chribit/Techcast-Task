@@ -17,4 +17,6 @@ The admin interface can be accessed via [localhost/admin](http://localhost:3000/
 ## Explanation
 
 As this task is minor in scope, no frontend framework was utilised to reduce unnecessary bloat and overall complexity.<br>
-A rudimentary build process using a CSS minifier and webpack was set up to produce *somewhat* optimal production ready files. CSS and JS injection was left out of the procedure to not only simplify the setup but also cater to the more modern web developer wisdom of serving multiple small files instead of one larger one.
+A rudimentary build process using a CSS minifier and webpack was set up to produce *somewhat* optimal production ready files. CSS and JS injection was left out of the procedure to not only simplify the setup but also cater to the more modern web developer wisdom of serving multiple small files instead of one larger one.<br>
+All styling is custom made.<br>
+Icons sourced from [SVG Repo](https://www.svgrepo.com/).
