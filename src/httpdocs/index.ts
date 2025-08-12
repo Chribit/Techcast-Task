@@ -35,6 +35,7 @@ function sendMessage (event : SubmitEvent)
         };
         socket.send(newMessage);
 
+        // reset the message input
         messageInput.value = "";
     }
 
@@ -52,10 +53,12 @@ function buildMessage (message : MessageDatum)
     const messageTextElement : HTMLSpanElement = document.createElement("span");
     messageTextElement.textContent = message.text;
 
+    // the colour of the message author icon is determined by a inline css colour variable --> the one generated for the author
     const messageIconElement : HTMLDivElement = document.createElement("div");
     messageIconElement.style = "--c:" + message.author.hexColor;
     messageIconElement.textContent = message.author.initials;
 
+    // the message text and icon are appended in the order appropriate based on whether or not the message is viewed by the original author
     messageElement.appendChild(authorsMatch ? messageTextElement : messageIconElement);
     messageElement.appendChild(authorsMatch ? messageIconElement : messageTextElement);
 
