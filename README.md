@@ -5,7 +5,7 @@ A task completed for my job application at [Techcast GmbH](https://www.techcast.
 
 Run `npm run build-win` to build the project on windows.<br>
 Run `npm run build-mac` to build the project on macOS.<br>
-Note that the build process on mac has not been tested - but *should* work.
+Note that the build process on mac has **not** been tested - but it *should* work.
 
 To ensure functionality out of the box, a full build is included in this repository.<br>
 The above build commands are therefore optional.
