@@ -2,9 +2,11 @@
   "name": "techcast-task",
   "version": "1.0.0",
   "description": "-",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-mac": "sh build.sh",
+    "build-win": ".\\build.bat",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/Chribit/Techcast-Task/issues"
   },
-  "homepage": "https://github.com/Chribit/Techcast-Task#readme"
+  "homepage": "https://github.com/Chribit/Techcast-Task#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "css-minify": "^2.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "node-html-parser": "^7.0.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.1",
+    "webpack-cli": "^6.0.1"
+  }
 }
