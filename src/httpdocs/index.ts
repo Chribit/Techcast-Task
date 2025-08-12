@@ -83,6 +83,7 @@ function buildPushMessage (message : PushMessageDatum)
 {
     const messageElement : HTMLLIElement = document.createElement("li");
     messageElement.className = "push-message";
+    messageElement.dataset.timestamp = "" + message.timestamp;
     messageElement.textContent = message.text;
 
     pushMessages.insertBefore(messageElement, pushMessages.firstChild);
@@ -124,6 +125,11 @@ function initialise ()
 
         // scroll to top of push messages, to make new push message visible
         pushMessages.parentElement!.scrollTop = 0;
+    });
+
+    // listen for push message deletion requests
+    socket.on("push-message-deletion", (pushMessageTimestamp : number) => {
+        document.querySelector(`[data-timestamp="${pushMessageTimestamp}"]`)?.remove();
     });
 
     // send a message if the form is submitted via the button

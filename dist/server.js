@@ -46,4 +46,17 @@ io.on("connection", (socket) => {
         // send message to all connected clients
         io.emit("push-message", pushMessage);
     });
+    socket.on("push-message-deletion", (pushMessageTimestamp) => {
+        // a binary search could be employed here to arrive at the to-be-deleted item more rapidly
+        // or a map data structure may be used for push messages, however ordering then becomes an issue
+        for (let index = 0; index < pushMessages.length; index++) {
+            const pushMessage = pushMessages[index];
+            if (pushMessage.timestamp === pushMessageTimestamp) {
+                pushMessages.splice(index, 1);
+                break;
+            }
+        }
+        // send deletion request to all connected clients
+        io.emit("push-message-deletion", pushMessageTimestamp);
+    });
 });

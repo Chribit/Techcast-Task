@@ -13,13 +13,14 @@ type MessageDatum = {
 };
 
 type PushMessageDatum = {
-    text : string
+    timestamp: number,
+    text: string
 };
 
-const expressServer : Express = express();
-const port : number = 3000;
-const messageHistory : MessageDatum[] = [];
-const pushMessages : PushMessageDatum[] = [];
+const expressServer: Express = express();
+const port: number = 3000;
+const messageHistory: MessageDatum[] = [];
+const pushMessages: PushMessageDatum[] = [];
 
 expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
@@ -67,7 +68,7 @@ io.on("connection", (socket: Socket) => {
         );
     });
 
-    socket.on("message", (message: MessageDatum) => {
+    socket.on("message", (message : MessageDatum) => {
 
         // store message data for all clients
         messageHistory.push(message);
@@ -76,12 +77,30 @@ io.on("connection", (socket: Socket) => {
         io.emit("message", message);
     });
 
-    socket.on("push-message", (pushMessage: PushMessageDatum) => {
+    socket.on("push-message", (pushMessage : PushMessageDatum) => {
 
         // store message data for all clients
         pushMessages.push(pushMessage);
 
         // send message to all connected clients
         io.emit("push-message", pushMessage);
+    });
+
+    socket.on("push-message-deletion", (pushMessageTimestamp : number) => {
+
+        // a binary search could be employed here to arrive at the to-be-deleted item more rapidly
+        // or a map data structure may be used for push messages, however ordering then becomes an issue
+        for (let index = 0; index < pushMessages.length; index++)
+        {
+            const pushMessage : PushMessageDatum = pushMessages[index];
+            if (pushMessage.timestamp === pushMessageTimestamp)
+            {
+                pushMessages.splice(index, 1);
+                break;
+            }
+        }
+
+        // send deletion request to all connected clients
+        io.emit("push-message-deletion", pushMessageTimestamp);
     });
 });
