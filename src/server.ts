@@ -12,10 +12,14 @@ type MessageDatum = {
     text: string
 };
 
+type PushMessageDatum = {
+    text : string
+};
+
 const expressServer : Express = express();
 const port : number = 3000;
-const authors : Author[] = [];
 const messageHistory : MessageDatum[] = [];
+const pushMessages : PushMessageDatum[] = [{text: "this is one test message!"}, {text: "this is another test push message and so on!"}];
 
 expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
@@ -28,8 +32,6 @@ const httpServer = expressServer.listen(port, () => {
 const io = new Server(httpServer);
 
 io.on("connection", (socket: Socket) => {
-
-    console.log(`User ${socket.id} connected to the server.`);
 
     socket.on("author", () => {
 
@@ -58,7 +60,23 @@ io.on("connection", (socket: Socket) => {
         );
     });
 
+    socket.on("pushHistory", () => {
+        socket.emit(
+            "pushHistory",
+            JSON.stringify(pushMessages)
+        );
+    });
+
     socket.on("message", (message: MessageDatum) => {
+
+        // store message data for all clients
+        messageHistory.push(message);
+
+        // send message to all connected clients
+        io.emit("message", message);
+    });
+
+    socket.on("push-message", (message: MessageDatum) => {
 
         // store message data for all clients
         messageHistory.push(message);

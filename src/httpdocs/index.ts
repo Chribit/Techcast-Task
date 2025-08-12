@@ -10,11 +10,16 @@ type MessageDatum = {
     text : string
 };
 
+type PushMessageDatum = {
+    text : string
+};
+
 const socket = io("ws://localhost:3000");
 const messages : HTMLUListElement = document.getElementById("messages") as HTMLUListElement;
+const pushMessages : HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
 let author : Author;
 
-async function constructMessageHistory (history: MessageDatum[])
+function constructMessageHistory (history: MessageDatum[])
 {
     for (const message of history)
     {
@@ -65,6 +70,23 @@ function buildMessage (message : MessageDatum)
     messages.appendChild(messageElement);
 }
 
+function constructPushMessageHistory (history: PushMessageDatum[])
+{
+    for (const message of history)
+    {
+        buildPushMessage(message);
+    }
+}
+
+function buildPushMessage (message : PushMessageDatum)
+{
+    const messageElement : HTMLLIElement = document.createElement("li");
+    messageElement.className = "push-message";
+    messageElement.textContent = message.text;
+
+    pushMessages.insertBefore(messageElement, pushMessages.firstChild);
+}
+
 async function initialise ()
 {
     // request author data from server
@@ -79,6 +101,12 @@ async function initialise ()
     });
     socket.emit("history");
 
+    // request push message data from server
+    socket.on("pushHistory", (pushHistoryData : string) => {
+        constructPushMessageHistory(JSON.parse(pushHistoryData))
+    });
+    socket.emit("pushHistory");
+
     // listen for new messages in the global chatroom
     socket.on("message", (data : MessageDatum) => {
 
@@ -86,6 +114,11 @@ async function initialise ()
 
         // scroll to bottom of chat, to make new message visible
         messages.parentElement.scrollTop = messages.parentElement.scrollHeight;
+    });
+
+    // listen for new messages in the global chatroom
+    socket.on("push-message", (data : PushMessageDatum) => {
+        buildPushMessage(data);
     });
 
     // send a message if the form is submitted via the button
