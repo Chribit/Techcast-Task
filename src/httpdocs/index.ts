@@ -6,12 +6,13 @@ type Author = {
 }
 
 type MessageDatum = {
-    author : Author,
-    text : string
+    author: Author,
+    text: string
 };
 
 type PushMessageDatum = {
-    text : string
+    timestamp: number,
+    text: string
 };
 
 const socket = io("ws://localhost:3000");
@@ -118,6 +119,7 @@ async function initialise ()
 
     // listen for new messages in the global chatroom
     socket.on("push-message", (data : PushMessageDatum) => {
+        
         buildPushMessage(data);
 
         // scroll to top of push messages, to make new push message visible
