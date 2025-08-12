@@ -1,5 +1,10 @@
 import { io } from "socket.io-client";
 
+type Author = {
+    initials: string,
+    hexColor: string
+}
+
 type MessageDatum = {
     author : string,
     text : string
@@ -7,6 +12,7 @@ type MessageDatum = {
 
 const socket = io("ws://localhost:3000");
 const messages : HTMLUListElement = document.getElementById("messages") as HTMLUListElement;
+let author : Author;
 
 async function constructMessageHistory ()
 {
@@ -53,6 +59,14 @@ async function initialise ()
 {
     // request message history of the global chatroom
     await constructMessageHistory();
+
+    // listen for author data from server
+    socket.on("author", (data : Author) => {
+        author = data;
+    });
+
+    // request author data
+    socket.emit("author");
 
     // listen for new messages in the global chatroom
     socket.on("message", (data : MessageDatum) => {
