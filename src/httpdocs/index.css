@@ -80,6 +80,13 @@ body {
     height: 40px;
     background-color: var(--c);
     border-radius: 50%;
+    border: solid 2px white;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 40px;
+    text-anchor: middle;
+    color: white;
+    font-weight: bold;
 }
 
 #message-creation {
@@ -111,13 +118,15 @@ body {
     justify-content: center;
 }
 
-#message-confirm:hover {
-    transform: scale(1.05);
-    cursor: pointer;
-    box-shadow: 0px 0px 10px rgba(0, 251, 255, 0.1);
-}
-
 #message-confirm > img {
     width: 60%;
     height: 60%;
+}
+
+#message-confirm:hover {
+    cursor: pointer;
+}
+
+#message-confirm:hover > img {
+    transform: scale(1.1);
 }

@@ -54,6 +54,7 @@ function buildMessage (message : MessageDatum)
 
     const messageIconElement : HTMLDivElement = document.createElement("div");
     messageIconElement.style = "--c:" + message.author.hexColor;
+    messageIconElement.textContent = message.author.initials;
 
     messageElement.appendChild(authorsMatch ? messageTextElement : messageIconElement);
     messageElement.appendChild(authorsMatch ? messageIconElement : messageTextElement);
