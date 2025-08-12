@@ -19,7 +19,7 @@ expressServer.get("/fetchHistory", (request : Request, response : Response) => {
     // send entire message history to client - obviously doesn't scale well but is enough for this demonstration
     // probably could do a lazy loading system here and send message history in batches of 10 or so
     response.send(
-        JSON.stringify(messageHistory)
+        JSON.stringify(messageHistory.slice(-10))
     );
 });
 
@@ -33,7 +33,6 @@ io.on("connection", (socket : Socket) => {
     console.log(`User ${socket.id} connected to the server.`);
 
     socket.on("message", (message : MessageDatum) => {
-        console.log(message);
 
         // store message data for all clients
         messageHistory.push(message);
