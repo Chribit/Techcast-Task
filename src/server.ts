@@ -21,14 +21,6 @@ expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
 ));
 
-expressServer.get("/fetchHistory", (request: Request, response: Response) => {
-    // send entire message history to client - obviously doesn't scale well but is enough for this demonstration
-    // probably could do a lazy loading system here and send message history in batches of 10 or so
-    response.send(
-        JSON.stringify(messageHistory.slice(-10))
-    );
-});
-
 const httpServer = expressServer.listen(port, () => {
     console.log(`\nTechcast-Task server started successfully on port ${port}!\n`);
 });
@@ -56,6 +48,13 @@ io.on("connection", (socket: Socket) => {
         socket.emit(
             "author",
             JSON.stringify(socketAuthor)
+        );
+    });
+
+    socket.on("history", () => {
+        socket.emit(
+            "history",
+            JSON.stringify(messageHistory.slice(-10))
         );
     });
 

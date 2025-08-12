@@ -11,11 +11,6 @@ const port = 3000;
 const authors = [];
 const messageHistory = [];
 expressServer.use("/", express_1.default.static((0, path_1.join)(__dirname, "httpdocs")));
-expressServer.get("/fetchHistory", (request, response) => {
-    // send entire message history to client - obviously doesn't scale well but is enough for this demonstration
-    // probably could do a lazy loading system here and send message history in batches of 10 or so
-    response.send(JSON.stringify(messageHistory.slice(-10)));
-});
 const httpServer = expressServer.listen(port, () => {
     console.log(`\nTechcast-Task server started successfully on port ${port}!\n`);
 });
@@ -24,15 +19,18 @@ io.on("connection", (socket) => {
     console.log(`User ${socket.id} connected to the server.`);
     socket.on("author", () => {
         const authorId = socket.id;
+        // generate random number for author of messages on current socket
         const red = Math.floor(Math.random() * 255).toString(16);
         const green = Math.floor(Math.random() * 255).toString(16);
         const blue = Math.floor(Math.random() * 255).toString(16);
         const socketAuthor = {
-            initials: "AA",
+            initials: authorId.charAt(0) + authorId.charAt(10),
             hexColor: `#${red}${green}${blue}`
         };
-        console.log(socketAuthor);
         socket.emit("author", JSON.stringify(socketAuthor));
+    });
+    socket.on("history", () => {
+        socket.emit("history", JSON.stringify(messageHistory.slice(-10)));
     });
     socket.on("message", (message) => {
         // store message data for all clients

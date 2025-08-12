@@ -6,7 +6,7 @@ type Author = {
 }
 
 type MessageDatum = {
-    author : string,
+    author : Author,
     text : string
 };
 
@@ -14,12 +14,9 @@ const socket = io("ws://localhost:3000");
 const messages : HTMLUListElement = document.getElementById("messages") as HTMLUListElement;
 let author : Author;
 
-async function constructMessageHistory ()
+async function constructMessageHistory (history: MessageDatum[])
 {
-    const response : Response = await fetch("/fetchHistory");
-    const messageHistory : MessageDatum[] = await response.json();
-
-    for (const message of messageHistory)
+    for (const message of history)
     {
         buildMessage(message);
     }
@@ -33,7 +30,7 @@ function sendMessage (event : SubmitEvent)
     if (messageInput.value)
     {
         const newMessage : MessageDatum = {
-            author: "0",
+            author: author,
             text: messageInput.value
         };
         socket.send(newMessage);
@@ -57,16 +54,17 @@ function buildMessage (message : MessageDatum)
 
 async function initialise ()
 {
-    // request message history of the global chatroom
-    await constructMessageHistory();
-
-    // listen for author data from server
-    socket.on("author", (data : Author) => {
-        author = data;
+    // request author data from server
+    socket.on("author", (authorData : string) => {
+        author = JSON.parse(authorData);
     });
-
-    // request author data
     socket.emit("author");
+
+    // request history data from server
+    socket.on("history", (historyData : string) => {
+        constructMessageHistory(JSON.parse(historyData))
+    });
+    socket.emit("history");
 
     // listen for new messages in the global chatroom
     socket.on("message", (data : MessageDatum) => {
