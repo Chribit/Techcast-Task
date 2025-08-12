@@ -12,6 +12,7 @@ const messageHistory = [];
 expressServer.use("/", express_1.default.static((0, path_1.join)(__dirname, "httpdocs")));
 expressServer.get("/fetchHistory", (request, response) => {
     // send entire message history to client - obviously doesn't scale well but is enough for this demonstration
+    // probably could do a lazy loading system here and send message history in batches of 10 or so
     response.send(JSON.stringify(messageHistory));
 });
 const httpServer = expressServer.listen(port, () => {

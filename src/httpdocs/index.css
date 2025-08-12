@@ -1,4 +1,64 @@
-h1 {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    color: blueviolet;
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #0C0C0C;
+    background: linear-gradient(45deg, #0C0C0C, #0A2739);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+#interface {
+    width: min(100%, 500px);
+    background: #0C0C0C;
+    background: linear-gradient(225deg, #0C0C0C, #303030);
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: auto 50px;
+    grid-row-gap: 10px;
+    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
+}
+
+#messages {
+    list-style: none;
+    height: 440px;
+    background: linear-gradient(225deg, #0C0C0C, #222);;
+    border-radius: 10px;
+    margin: 0;
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+#message-creation {
+    display: grid;
+    grid-template-columns: auto 50px;
+    grid-column-gap: 10px;
+}
+
+#message-input {
+    border: none;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+#message-input:focus {
+    border: none;
+}
+
+#message-confirm {
+    border-radius: 50%;
+    border: none;
+    background: #0188CD;
+    background: linear-gradient(225deg, #0188CD, #09013C);
+    width: 100%;
+    height: 100%;
+    transition: scale 200ms;
+}
+
+#message-confirm:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 251, 255, 0.5);
 }
