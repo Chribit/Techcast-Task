@@ -1,2 +1,2 @@
 # Techcast-Task
-A task completed for my job application at Techcast GmbH.
+A task completed for my job application at [Techcast GmbH](https://www.techcast.com/).
