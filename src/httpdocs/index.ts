@@ -44,10 +44,19 @@ function sendMessage (event : SubmitEvent)
 
 function buildMessage (message : MessageDatum)
 {
-    const messageElement : HTMLLIElement = document.createElement("li");
+    const authorsMatch : boolean = message.author.initials === author.initials;
 
-    messageElement.className = "message";
-    messageElement.textContent = message.text;
+    const messageElement : HTMLLIElement = document.createElement("li");
+    messageElement.className = "message" + (authorsMatch ? " me" : "");
+
+    const messageTextElement : HTMLSpanElement = document.createElement("span");
+    messageTextElement.textContent = message.text;
+
+    const messageIconElement : HTMLDivElement = document.createElement("div");
+    messageIconElement.style = "--c:" + message.author.hexColor;
+
+    messageElement.appendChild(authorsMatch ? messageTextElement : messageIconElement);
+    messageElement.appendChild(authorsMatch ? messageIconElement : messageTextElement);
 
     messages.appendChild(messageElement);
 }

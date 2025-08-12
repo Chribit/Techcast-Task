@@ -41,7 +41,7 @@ io.on("connection", (socket: Socket) => {
         const blue : string = Math.floor(Math.random() * 255).toString(16);
 
         const socketAuthor : Author = {
-            initials: authorId.charAt(0) + authorId.charAt(10),
+            initials: (authorId.charAt(0) + authorId.charAt(10)).toUpperCase(),
             hexColor: `#${red}${green}${blue}`
         };
 
