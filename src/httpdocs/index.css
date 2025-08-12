@@ -14,6 +14,7 @@ body {
     grid-template-rows: 1fr;
     align-items: center;
     justify-items: center;
+    overflow: hidden;
 }
 
 #interface {
@@ -30,7 +31,7 @@ body {
 
 #messages {
     list-style: none;
-    height: 440px;
+    height: 500px;
     background: linear-gradient(225deg, #0C0C0C, #222);;
     border-radius: 10px;
     margin: 0;
@@ -38,6 +39,7 @@ body {
     padding: 0;
     padding-bottom: 10px;
     overflow: hidden;
+    overflow-y: scroll;
     align-content: end;
     display: grid;
     grid-auto-rows: 40px;
