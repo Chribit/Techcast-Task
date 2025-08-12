@@ -8,7 +8,7 @@ body {
     width: 100vw;
     height: 100vh;
     background: #b5a696;
-    background: linear-gradient(225deg,#fff2e3,#b5a696);
+    background: linear-gradient(225deg,#d1c6ba,#8c8175);
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
