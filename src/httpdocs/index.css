@@ -132,7 +132,7 @@ body {
 
 #message-input {
     border: none;
-    border-radius: 10px;
+    border-radius: 10px 10px 10px 3px;
     padding-left: 10px;
 }
 
