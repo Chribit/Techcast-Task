@@ -13,3 +13,6 @@ REN "%CD%\dist\httpdocs\index.min.css" "index.css"
 REN "%CD%\dist\httpdocs\admin\index.min.css" "index.css"
 
 call tsc "--project" "tsconfig.server.json"
+
+robocopy "%CD%\src\httpdocs\images" "%CD%\dist\httpdocs\images" /E /NFL /NDL /NJH /NJS /nc /ns /np
+robocopy "%CD%\src\httpdocs\admin\images" "%CD%\dist\httpdocs\admin\images" /E /NFL /NDL /NJH /NJS /nc /ns /np
