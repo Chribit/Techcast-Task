@@ -119,6 +119,9 @@ async function initialise ()
     // listen for new messages in the global chatroom
     socket.on("push-message", (data : PushMessageDatum) => {
         buildPushMessage(data);
+
+        // scroll to top of push messages, to make new push message visible
+        pushMessages.parentElement!.scrollTop = 0;
     });
 
     // send a message if the form is submitted via the button

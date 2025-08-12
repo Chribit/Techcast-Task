@@ -1,23 +1,23 @@
 import { io } from "socket.io-client";
 
 type PushMessageDatum = {
-    text : string
+    text: string
 };
 
 const socket = io("ws://localhost:3000");
-const pushMessages : HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
+const pushMessages: HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
 
-function sendMessage (event : SubmitEvent)
+function sendPushMessage (event: SubmitEvent)
 {
     event.preventDefault();
-    const pushMessageInput : HTMLInputElement = document.getElementById("push-message-input") as HTMLInputElement;
+    const pushMessageInput: HTMLInputElement = document.getElementById("push-message-input") as HTMLInputElement;
 
     if (pushMessageInput.value)
     {
-        const newPushMessage : PushMessageDatum = {
+        const newPushMessage: PushMessageDatum = {
             text: pushMessageInput.value
         };
-        socket.send(newPushMessage);
+        socket.emit("push-message", newPushMessage);
 
         // reset the message input
         pushMessageInput.value = "";
@@ -25,6 +25,11 @@ function sendMessage (event : SubmitEvent)
 
     // makes it easy to type multiple messages without having to re-activate the input field
     pushMessageInput.focus();
+}
+
+function deletePushMessage ()
+{
+
 }
 
 function constructPushMessageHistory (history: PushMessageDatum[])
@@ -35,7 +40,7 @@ function constructPushMessageHistory (history: PushMessageDatum[])
     }
 }
 
-function buildPushMessage (message : PushMessageDatum)
+function buildPushMessage (message: PushMessageDatum)
 {
     const messageElement : HTMLLIElement = document.createElement("li");
     messageElement.className = "push-message";
@@ -57,12 +62,12 @@ async function initialise ()
 
         buildPushMessage(data);
 
-        // scroll to bottom of chat, to make new message visible
-        pushMessages.parentElement.scrollTop = 0;
+        // scroll to top of push messages, to make new push message visible
+        pushMessages.parentElement!.scrollTop = 0;
     });
 
     // send a message if the form is submitted via the button
-    document.getElementById("push-message-creation").addEventListener("submit", sendMessage);
+    document.getElementById("push-message-creation")!.addEventListener("submit", sendPushMessage);
 }
 
 initialise();

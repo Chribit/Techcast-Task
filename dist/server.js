@@ -9,7 +9,7 @@ const socket_io_1 = require("socket.io");
 const expressServer = (0, express_1.default)();
 const port = 3000;
 const messageHistory = [];
-const pushMessages = [{ text: "this is one test message!" }, { text: "this is another test push message and so on!" }];
+const pushMessages = [];
 expressServer.use("/", express_1.default.static((0, path_1.join)(__dirname, "httpdocs")));
 const httpServer = expressServer.listen(port, () => {
     console.log(`\nTechcast-Task server started successfully on port ${port}!\n`);
@@ -40,10 +40,10 @@ io.on("connection", (socket) => {
         // send message to all connected clients
         io.emit("message", message);
     });
-    socket.on("push-message", (message) => {
+    socket.on("push-message", (pushMessage) => {
         // store message data for all clients
-        messageHistory.push(message);
+        pushMessages.push(pushMessage);
         // send message to all connected clients
-        io.emit("message", message);
+        io.emit("push-message", pushMessage);
     });
 });

@@ -19,7 +19,7 @@ type PushMessageDatum = {
 const expressServer : Express = express();
 const port : number = 3000;
 const messageHistory : MessageDatum[] = [];
-const pushMessages : PushMessageDatum[] = [{text: "this is one test message!"}, {text: "this is another test push message and so on!"}];
+const pushMessages : PushMessageDatum[] = [];
 
 expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
@@ -76,12 +76,12 @@ io.on("connection", (socket: Socket) => {
         io.emit("message", message);
     });
 
-    socket.on("push-message", (message: MessageDatum) => {
+    socket.on("push-message", (pushMessage: PushMessageDatum) => {
 
         // store message data for all clients
-        messageHistory.push(message);
+        pushMessages.push(pushMessage);
 
         // send message to all connected clients
-        io.emit("message", message);
+        io.emit("push-message", pushMessage);
     });
 });
