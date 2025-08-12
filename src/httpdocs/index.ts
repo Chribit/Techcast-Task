@@ -1,18 +1,18 @@
 import { io } from "socket.io-client";
 
 type Author = {
-    initials: string,
-    hexColor: string
+    initials : string,
+    hexColor : string
 }
 
 type MessageDatum = {
-    author: Author,
-    text: string
+    author : Author,
+    text : string
 };
 
 type PushMessageDatum = {
-    timestamp: number,
-    text: string
+    timestamp : number,
+    text : string
 };
 
 const socket = io("ws://localhost:3000");
@@ -20,7 +20,7 @@ const messages : HTMLUListElement = document.getElementById("messages") as HTMLU
 const pushMessages : HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
 let author : Author;
 
-function constructMessageHistory (history: MessageDatum[])
+function constructMessageHistory (history : MessageDatum[])
 {
     for (const message of history)
     {
@@ -71,7 +71,7 @@ function buildMessage (message : MessageDatum)
     messages.appendChild(messageElement);
 }
 
-function constructPushMessageHistory (history: PushMessageDatum[])
+function constructPushMessageHistory (history : PushMessageDatum[])
 {
     for (const message of history)
     {

@@ -1,26 +1,26 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import { join } from "path";
 import { Server, Socket } from "socket.io";
 
 type Author = {
-    initials: string,
-    hexColor: string
+    initials : string,
+    hexColor : string
 }
 
 type MessageDatum = {
-    author: Author,
-    text: string
+    author : Author,
+    text : string
 };
 
 type PushMessageDatum = {
-    timestamp: number,
-    text: string
+    timestamp : number,
+    text : string
 };
 
-const expressServer: Express = express();
-const port: number = 3000;
-const messageHistory: MessageDatum[] = [];
-const pushMessages: PushMessageDatum[] = [];
+const expressServer : Express = express();
+const port : number = 3000;
+const messageHistory : MessageDatum[] = [];
+const pushMessages : PushMessageDatum[] = [];
 
 expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
@@ -32,7 +32,7 @@ const httpServer = expressServer.listen(port, () => {
 
 const io = new Server(httpServer);
 
-io.on("connection", (socket: Socket) => {
+io.on("connection", (socket : Socket) => {
 
     socket.on("author", () => {
 

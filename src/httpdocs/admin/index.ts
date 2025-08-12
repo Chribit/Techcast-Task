@@ -1,14 +1,14 @@
 import { io } from "socket.io-client";
 
 type PushMessageDatum = {
-    timestamp: number,
-    text: string
+    timestamp : number,
+    text : string
 };
 
 const socket = io("ws://localhost:3000");
-const pushMessages: HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
+const pushMessages : HTMLUListElement = document.getElementById("push-messages") as HTMLUListElement;
 
-function sendPushMessage (event: SubmitEvent)
+function sendPushMessage (event : SubmitEvent)
 {
     event.preventDefault();
     const pushMessageInput: HTMLInputElement = document.getElementById("push-message-input") as HTMLInputElement;
@@ -29,7 +29,7 @@ function sendPushMessage (event: SubmitEvent)
     pushMessageInput.focus();
 }
 
-function constructPushMessageHistory (history: PushMessageDatum[])
+function constructPushMessageHistory (history : PushMessageDatum[])
 {
     for (const message of history)
     {
@@ -37,7 +37,7 @@ function constructPushMessageHistory (history: PushMessageDatum[])
     }
 }
 
-function buildPushMessage (message: PushMessageDatum)
+function buildPushMessage (message : PushMessageDatum)
 {
     const messageElement : HTMLLIElement = document.createElement("li");
     messageElement.className = "push-message";
@@ -46,7 +46,7 @@ function buildPushMessage (message: PushMessageDatum)
     const messageDeletionButton : HTMLButtonElement = document.createElement("button");
     messageDeletionButton.textContent = "×";
 
-    messageDeletionButton.addEventListener("click", (event: PointerEvent) => {
+    messageDeletionButton.addEventListener("click", (event : PointerEvent) => {
 
         // ask the server to delete the push message with provided timestamp --> this ensures that no client-server desync issues can occur as would be possible during high network latency
         socket.emit("push-message-deletion", message.timestamp);
