@@ -9,8 +9,37 @@
     </head>
 
     <body>
-        <h1>Hello Admin</h1>
+        <div id="interface">
+            <div id="push-messages-header">
+                <h2 id="push-messages-title">
+                    Push Messages
+                </h2>
 
-        <script src="./index.js"></script>
+                <a
+                    id="client-opener"
+                    href="../index.html"
+                >
+                    <img src="./images/people_icon.svg">
+                </a>
+            </div>
+
+            <div id="push-messages-wrapper">
+                <ul id="push-messages"></ul>
+            </div>
+
+            <form id="push-message-creation">
+                <input
+                    id="push-message-input"
+                    type="text"
+                    placeholder="Type a push message here..."
+                >
+
+                <button id="push-message-confirm">
+                    <img src="./images/paper_plane_icon.svg">
+                </button>
+            </form>
+        </div>
+
+        <script defer src="./index.js"></script>
     </body>
 </html>
