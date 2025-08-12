@@ -1,13 +1,44 @@
-const express = require("express");
-const path = require("path");
+import express, { Express, Request, Response } from "express";
+import { join } from "path";
+import { Server, Socket } from "socket.io";
 
-const server = express();
+type MessageDatum = {
+    author : string,
+    text : string
+};
+
+const expressServer : Express = express();
 const port : number = 3000;
+const messageHistory : MessageDatum[] = [];
 
-server.use("/", express.static(
-    path.join(__dirname, "httpdocs")
+expressServer.use("/", express.static(
+    join(__dirname, "httpdocs")
 ));
 
-server.listen(port, () => {
-    console.log("Techcast-Task server started successfully on port " + port + "!");
+expressServer.get("/fetchHistory", (request : Request, response : Response) => {
+    // send entire message history to client - obviously doesn't scale well but is enough for this demonstration
+    // probably could do a lazy loading system here and send message history in batches of 10 or so
+    response.send(
+        JSON.stringify(messageHistory)
+    );
+});
+
+const httpServer = expressServer.listen(port, () => {
+    console.log(`\nTechcast-Task server started successfully on port ${port}!\n`);
+});
+
+const io = new Server(httpServer);
+
+io.on("connection", (socket : Socket) => {
+    console.log(`User ${socket.id} connected to the server.`);
+
+    socket.on("message", (message : MessageDatum) => {
+        console.log(message);
+
+        // store message data for all clients
+        messageHistory.push(message);
+
+        // send message to all connected clients
+        io.emit("message", message);
+    });
 });
