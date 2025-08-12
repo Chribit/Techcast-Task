@@ -42,7 +42,10 @@ function sendMessage (event : SubmitEvent)
 function buildMessage (message : MessageDatum)
 {
     const messageElement : HTMLLIElement = document.createElement("li");
+
+    messageElement.className = "message";
     messageElement.textContent = message.text;
+
     messages.appendChild(messageElement);
 }
 
@@ -51,7 +54,7 @@ async function initialise ()
     // request message history of the global chatroom
     await constructMessageHistory();
 
-    // listen for messages to the global chatroom
+    // listen for new messages in the global chatroom
     socket.on("message", (data : MessageDatum) => {
         buildMessage(data);
     });
