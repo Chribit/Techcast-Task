@@ -56,9 +56,16 @@ body {
     align-content: start;
 }
 
-#push-messages-title {
+#push-messages-header {
     grid-column: 2/3;
     grid-row: 1/2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 50px;
+    grid-column-gap: 10px;
+}
+
+#push-messages-title {
     color: white;
     line-height: 50px;
     margin: 0;
@@ -141,7 +148,7 @@ body {
     outline: none;
 }
 
-#message-confirm {
+#message-confirm, #admin-opener {
     border-radius: 50%;
     border: none;
     background: #009788;
@@ -153,15 +160,19 @@ body {
     justify-content: center;
 }
 
-#message-confirm > img {
+#admin-opener {
+    background: #972600;
+}
+
+#message-confirm > img, #admin-opener > img {
     width: 60%;
     height: 60%;
 }
 
-#message-confirm:hover {
+#message-confirm:hover, #admin-opener:hover {
     cursor: pointer;
 }
 
-#message-confirm:hover > img {
+#message-confirm:hover > img, #admin-opener:hover > img {
     transform: scale(1.1);
 }
