@@ -53,7 +53,6 @@ body {
 }
 
 #push-messages-wrapper {
-    height: 520px;
     grid-column: 2/3;
     grid-row: 2/4;
     border-radius: var(--max-rounding) var(--max-rounding) var(--min-rounding) var(--max-rounding);
