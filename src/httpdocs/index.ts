@@ -88,7 +88,7 @@ function buildPushMessage (message : PushMessageDatum)
     pushMessages.insertBefore(messageElement, pushMessages.firstChild);
 }
 
-async function initialise ()
+function initialise ()
 {
     // request author data from server
     socket.on("author", (authorData : string) => {
