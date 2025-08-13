@@ -9,7 +9,29 @@
     </head>
 
     <body>
-        <div id="interface">
+        <form id="admin-login">
+            <label
+                id="admin-password-label"
+                for="admin-password"
+            >
+                Admin Login
+            </label>
+
+            <input
+                id="admin-password"
+                type="password"
+                placeholder="Type password here..."
+            >
+
+            <button id="admin-password-submit">
+                ✔
+            </button>
+        </form>
+
+        <div
+            id="interface"
+            style="display:none;"
+        >
             <div id="push-messages-header">
                 <h2 id="push-messages-title">
                     Push Messages

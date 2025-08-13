@@ -11,7 +11,7 @@ const pushMessages : HTMLUListElement = document.getElementById("push-messages")
 function sendPushMessage (event : SubmitEvent)
 {
     event.preventDefault();
-    const pushMessageInput: HTMLInputElement = document.getElementById("push-message-input") as HTMLInputElement;
+    const pushMessageInput : HTMLInputElement = document.getElementById("push-message-input") as HTMLInputElement;
 
     if (pushMessageInput.value)
     {
@@ -61,7 +61,7 @@ function buildPushMessage (message : PushMessageDatum)
     pushMessages.insertBefore(messageElement, pushMessages.firstChild);
 }
 
-function initialise ()
+function initialiseSocket ()
 {
     // request push message data from server
     socket.on("pushHistory", (pushHistoryData : string) => {
@@ -87,4 +87,38 @@ function initialise ()
     document.getElementById("push-message-creation")!.addEventListener("submit", sendPushMessage);
 }
 
-initialise();
+function initialiseLogin ()
+{
+    // send a login request if the form is submitted via the button
+    document.getElementById("admin-login")!.addEventListener("submit", async (event : SubmitEvent) => {
+
+        // prevents page refresh on submit
+        event.preventDefault();
+
+        const adminPasswordInput : HTMLInputElement = document.getElementById("admin-password") as HTMLInputElement;
+
+        if (adminPasswordInput.value)
+        {
+            console.log(adminPasswordInput.value)
+
+            const loginResponse = await fetch("/admin-login", {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(adminPasswordInput.value)
+            });
+
+            // reset the message input on fail
+            // adminPasswordInput.value = "";
+        }
+
+        // makes it easy to type multiple messages without having to re-activate the input field
+        adminPasswordInput.focus();
+    });
+}
+
+initialiseSocket();
+
+initialiseLogin();
