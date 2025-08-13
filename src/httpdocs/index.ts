@@ -22,6 +22,9 @@ let author : Author;
 
 function constructMessageHistory (history : MessageDatum[])
 {
+    // clear old history if tab hasn't been refreshed
+    messages.innerHTML = "";
+
     for (const message of history)
     {
         buildMessage(message);
@@ -73,6 +76,9 @@ function buildMessage (message : MessageDatum)
 
 function constructPushMessageHistory (history : PushMessageDatum[])
 {
+    // clear old history if tab hasn't been refreshed
+    pushMessages.innerHTML = "";
+
     for (const message of history)
     {
         buildPushMessage(message);

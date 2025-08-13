@@ -41,6 +41,9 @@ function sendPushMessage (socket : Socket, event : SubmitEvent)
 
 function constructPushMessageHistory (socket : Socket, history : PushMessageDatum[])
 {
+    // clear old history if tab hasn't been refreshed
+    pushMessages.innerHTML = "";
+
     for (const message of history)
     {
         buildPushMessage(socket, message);
@@ -100,6 +103,7 @@ function initialiseSocket ()
 
     // listen for admin reset requests
     socket.on("adminReset", () => {
+
         // show login screen and hide push message screen
         document.getElementById("admin-login")!.style.display = "grid";
         document.getElementById("interface")!.style.display = "none";
