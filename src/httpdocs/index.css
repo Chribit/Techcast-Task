@@ -143,7 +143,7 @@ body {
 #message-input {
     border: none;
     border-radius: var(--max-rounding) var(--max-rounding) var(--max-rounding) var(--min-rounding);
-    padding-left: var(--spacing);
+    padding: 0 var(--spacing);
 }
 
 #message-input:focus {
