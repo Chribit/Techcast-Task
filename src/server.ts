@@ -1,4 +1,6 @@
-import express, { Express } from "express";
+import { genSaltSync, hashSync, compareSync } from "bcrypt";
+import bodyParser from "body-parser";
+import express, { Express, Request, Response } from "express";
 import { join } from "path";
 import { Server, Socket } from "socket.io";
 
@@ -17,14 +19,52 @@ type PushMessageDatum = {
     text : string
 };
 
+type AdminActionDatum = {
+    token : number,
+    message : PushMessageDatum
+}
+
 const expressServer : Express = express();
+const jsonParser = bodyParser.json();
 const port : number = 3000;
 const messageHistory : MessageDatum[] = [];
 const pushMessages : PushMessageDatum[] = [];
+const adminTokens : Set<number> = new Set();
+
+// This is OBVIOUSLY not how it should be done in production, but for a proof of concept this suffices
+const passwordString : string = "techcastadmin";
+const passwordSalt : string = genSaltSync(10);
+const adminPassword : string = hashSync(passwordString, passwordSalt);
 
 expressServer.use("/", express.static(
     join(__dirname, "httpdocs")
 ));
+
+expressServer.post("/admin-login", jsonParser, (request : Request, response : Response) => {
+
+    const password : string = request.body.password || "";
+    const isCorrect = compareSync(password, adminPassword);
+
+    if (isCorrect)
+    {
+        // A random number isn't really secure here, but it does the job for this demo
+        const accessToken = Math.floor(Math.random() * 1000000000);
+        adminTokens.add(accessToken);
+
+        response.send({
+            success: true,
+            token: accessToken
+        });
+    }
+    else
+    {
+        response.send({
+            success: false,
+            token: ""
+        });
+    }
+
+});
 
 const httpServer = expressServer.listen(port, () => {
     console.log(`\nTechcast-Task server started successfully on port ${port}!\n`);
@@ -33,6 +73,8 @@ const httpServer = expressServer.listen(port, () => {
 const io = new Server(httpServer);
 
 io.on("connection", (socket : Socket) => {
+
+    console.log(`User ${socket.id} has connected to the service.`);
 
     socket.on("author", () => {
 
@@ -77,30 +119,50 @@ io.on("connection", (socket : Socket) => {
         io.emit("message", message);
     });
 
-    socket.on("push-message", (pushMessage : PushMessageDatum) => {
+    socket.on("pushMessage", (action : AdminActionDatum) => {
 
-        // store message data for all clients
-        pushMessages.push(pushMessage);
+        // check if push message is coming from an authorized connection
+        const validAction : boolean = adminTokens.has(action.token);
 
-        // send message to all connected clients
-        io.emit("push-message", pushMessage);
+        if (validAction)
+        {
+            // store message data for all clients
+            pushMessages.push(action.message);
+
+            // send message to all connected clients
+            io.emit("pushMessage", action.message);
+        }
+        else
+        {
+            socket.emit("adminReset");
+        }
     });
 
-    socket.on("push-message-deletion", (pushMessageTimestamp : number) => {
+    socket.on("pushMessageDeletion", (action : AdminActionDatum) => {
 
-        // a binary search could be employed here to arrive at the to-be-deleted item more rapidly
-        // or a map data structure may be used for push messages, however ordering then becomes an issue
-        for (let index = 0; index < pushMessages.length; index++)
+        // check if deletion request is coming from an authorized connection
+        const validAction : boolean = adminTokens.has(action.token);
+
+        if (validAction)
         {
-            const pushMessage : PushMessageDatum = pushMessages[index];
-            if (pushMessage.timestamp === pushMessageTimestamp)
+            // a binary search could be employed here to arrive at the to-be-deleted item more rapidly
+            // or a map data structure may be used for push messages, however ordering then becomes an issue
+            for (let index = 0; index < pushMessages.length; index++)
             {
-                pushMessages.splice(index, 1);
-                break;
+                const pushMessage : PushMessageDatum = pushMessages[index];
+                if (pushMessage.timestamp === action.message.timestamp)
+                {
+                    pushMessages.splice(index, 1);
+                    break;
+                }
             }
-        }
 
-        // send deletion request to all connected clients
-        io.emit("push-message-deletion", pushMessageTimestamp);
+            // send deletion request to all connected clients
+            io.emit("pushMessageDeletion", action.message.timestamp);
+        }
+        else
+        {
+            socket.emit("adminReset");
+        }
     });
 });
