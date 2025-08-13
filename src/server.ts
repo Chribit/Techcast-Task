@@ -60,7 +60,7 @@ expressServer.post("/admin-login", jsonParser, (request : Request, response : Re
     {
         response.send({
             success: false,
-            token: ""
+            token: 0
         });
     }
 
