@@ -99,7 +99,11 @@ function initialise ()
 
     // request history data from server
     socket.on("history", (historyData : string) => {
-        constructMessageHistory(JSON.parse(historyData))
+
+        constructMessageHistory(JSON.parse(historyData));
+
+        // scroll to bottom of chat, to make newest message visible
+        messages.parentElement.scrollTop = messages.parentElement.scrollHeight;
     });
     socket.emit("history");
 
