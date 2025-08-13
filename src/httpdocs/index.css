@@ -105,9 +105,11 @@ body {
 
 #messages > .message > span {
     background-color: white;
-    width: fit-content;
     border-radius: var(--max-rounding);
     padding: var(--spacing);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: calc(100% - 2 * var(--spacing));
 }
 
 #messages > .message > div {
