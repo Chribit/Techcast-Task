@@ -96,6 +96,7 @@ body {
     display: grid;
     grid-template-columns: 40px auto;
     grid-column-gap: var(--spacing);
+    justify-items: start;
 }
 
 #messages > .message.me {
