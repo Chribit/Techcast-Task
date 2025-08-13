@@ -34,7 +34,7 @@ expressServer.post("/admin-login", jsonParser, (request, response) => {
     else {
         response.send({
             success: false,
-            token: ""
+            token: 0
         });
     }
 });
