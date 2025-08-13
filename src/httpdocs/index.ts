@@ -119,7 +119,7 @@ function initialise ()
     });
 
     // listen for new messages in the global chatroom
-    socket.on("push-message", (data : PushMessageDatum) => {
+    socket.on("pushMessage", (data : PushMessageDatum) => {
         
         buildPushMessage(data);
 
@@ -128,7 +128,7 @@ function initialise ()
     });
 
     // listen for push message deletion requests
-    socket.on("push-message-deletion", (pushMessageTimestamp : number) => {
+    socket.on("pushMessageDeletion", (pushMessageTimestamp : number) => {
         document.querySelector(`[data-timestamp="${pushMessageTimestamp}"]`)?.remove();
     });
 
